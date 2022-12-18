@@ -1,11 +1,14 @@
 import React, { useMemo } from "react";
 import { useTable } from "react-table";
-import { Columns } from "./columns";
+import { Columns, GROUPED_COLUMNS } from "./columns";
 import MOCK_DATA from "./MOCK_DATA.json";
 import "./table.css";
 function BasicTable() {
   const columns = useMemo(() => Columns, []);
   const data = useMemo(() => MOCK_DATA, []);
+
+  // const columns = useMemo(() => GROUPED_COLUMNS, []); this one is to
+  //group the names .
 
   const tableInstance = useTable({
     columns,
@@ -16,8 +19,14 @@ function BasicTable() {
   // aa     bb    20
   //  cc    dd    25
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInstance;
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    footerGroups,
+    rows,
+    prepareRow,
+  } = tableInstance;
 
   return (
     <table {...getTableProps()}>
@@ -42,6 +51,15 @@ function BasicTable() {
           );
         })}
       </tbody>
+      <tfoot>
+        {footerGroups.map((footerGroup) => (
+          <tr {...footerGroup.getFooterGroupProps()}>
+            {footerGroup.headers.map((column) => (
+              <td {...column.getFooterProps()}>{column.render("Footer")}</td>
+            ))}
+          </tr>
+        ))}
+      </tfoot>
     </table>
   );
 }
