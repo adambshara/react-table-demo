@@ -1,8 +1,12 @@
+import { format } from "date-fns";
+import { ColumnsFilter } from "./columnsFilter";
 export const Columns = [
   {
     Header: "Id",
     Footer: "Id",
     accessor: "id",
+
+    disableFilters: true,
   },
   {
     Header: "First Name",
@@ -22,7 +26,12 @@ export const Columns = [
   {
     Header: "DOB",
     Footer: "DOB",
-    accessor: "date_of_birth",
+    accessor: "data_of_birth",
+
+    Cell: ({ value }) => {
+      console.log("value", value);
+      return format(new Date(value), "MM/dd/yyyy");
+    },
   },
   {
     Header: "Age",
